@@ -1,8 +1,16 @@
 package guru.springframework.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = {"recipe"})
 @Entity
 public class Ingredient {
 
@@ -11,11 +19,10 @@ public class Ingredient {
     private Long id;
     private BigDecimal amount;
     private String description;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Recipe recipe;
-    @OneToOne
-
-    private UnitOfMeasure unitOfMeasure;
+    @OneToOne(fetch = FetchType.EAGER)
+    private UnitOfMeasure uom;
 
     public Ingredient() {
     }
@@ -23,46 +30,14 @@ public class Ingredient {
     public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom) {
         this.description = description;
         this.amount = amount;
-        this.unitOfMeasure = uom;
+        this.uom = uom;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
+    public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom, Recipe recipe) {
         this.description = description;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
+        this.amount = amount;
+        this.uom = uom;
         this.recipe = recipe;
     }
 
-    public UnitOfMeasure getUnitOfMeasure() {
-        return unitOfMeasure;
-    }
-
-    public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
-        this.unitOfMeasure = unitOfMeasure;
-    }
 }
